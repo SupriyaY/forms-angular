@@ -2,16 +2,21 @@
  
     <h2>User Settings</h2>
 
-    <form #form="ngForm" ngNativeValidate>
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
         <div class="form-group">
             <label for="name">Name</label>
             <input id="name" name="name" class="form-control" placeholder="Name" [(ngModel)]="userSettings.name" 
-           required #nameField="ngModel">
+           (blur)="onBlur(nameField)"
+            required #nameField="ngModel" 
+           [class.field-error]="form.submitted && nameField.invalid">
+           <div [hidden]="!form.submitted || nameField.valid" 
+           class="alert alert-danger">Enter a name
+        </div>
         </div>
 
         <!-- <h3>dirty : {{propertyTest.dirty}}</h3> -->
 
-        
+
 
         <div class="form-check form-group">
             <input type="checkbox" class="form-check-input" id="emailOffers" name=emailOffers [(ngModel)]="userSettings.emailOffers">
@@ -53,11 +58,14 @@
             <label for="notes">Notes</label>
             <textarea name="notes" id="name" class="form-control" rows='3' [(ngModel)]="userSettings.notes"></textarea>
         </div>
-
-   
+<div [hidden] = "!postError"
+class="alert alert-danger">
+{{postErrorMessage}}
+</div>
+    
 
         <button class="btn btn-primary">Send</button>
     </form>
 </div>
 
-<h3>{{originalUserSettings | json}}</h3>
+<!-- <h3>{{originalUserSettings | json}}</h3> -->
